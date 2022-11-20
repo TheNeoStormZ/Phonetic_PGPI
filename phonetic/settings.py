@@ -36,6 +36,13 @@ ADMINS = (
 )
 
 ALLOWED_HOSTS = ['127.0.0.1','localhost']
+STATIC_URL = 'static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'principal/static/')
+]
 
 
 # Application definition
