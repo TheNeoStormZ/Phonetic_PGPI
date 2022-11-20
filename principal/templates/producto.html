@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block contenido %}
+<main role="main">
+  <div class="container">
+    <h2>Detalles del Producto</h2>
+  </div>
+  <div class="row align-items-left">
+    <div class="col-md-3">
+      <div class="album py-5 ml-5">
+        <div class="mb-4 box-shadow">
+          <img
+            src="{{producto.imagen}}"
+            alt="Iamgen"
+            width="50%"
+            height="50%"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <br />
+      <br />
+      <h2>{{producto.nombre}}</h2>
+      <p>{{producto.descripcion}}</p>
+      <br />
+      <br />
+      <h1>{{producto.precio}}€</h1>
+      <br />
+      <button type="button" disabled="true" class="btn btn-danger">
+        Comprar
+      </button>
+    </div>
+  </div>
+</main>
+{% endblock %}

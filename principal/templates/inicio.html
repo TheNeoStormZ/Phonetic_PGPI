@@ -1,29 +1,35 @@
-{% extends 'base.html' %}
-
-{% block contenido %}
+{% extends 'base.html' %} {% block contenido %}
 <main role="main">
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
-        {% for x in productos %}
+        {% for producto in productos %}
         <div class="col-md-4">
           <div class="card mb-4 box-shadow">
-            <a href="https://www.google.es">
-              <img class="card-img-top" src={{x.imagen}} alt="Card image cap" width="300" height="300">
+            <a href="/producto/{{producto.id}}">
+              <img
+                class="card-img-top"
+                src="{{producto.imagen}}"
+                alt="Card image cap"
+                width="300"
+                height="300"
+              />
             </a>
             <div class="card-body">
               <div>
-                <p class="card-text">{{x.nombre}}</p>
+                <p class="card-text">{{producto.nombre}}</p>
               </div>
               <div>
-                <strong>{{x.precio}}€</strong>
+                <strong>{{producto.precio}}€</strong>
               </div>
-              <p class="card-text">{{x.descripcion}}</p>
+              <p class="card-text">{{producto.descripcion}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" disabled="true" class="btn-primary">{{x.secciones}}</button>
+                  <button type="button" disabled="true" class="btn-primary">
+                    {{producto.secciones}}
+                  </button>
                 </div>
-                <small class="text-muted">{{x.categoria}}</small>
+                <small class="text-muted">{{producto.categoria}}</small>
               </div>
             </div>
           </div>
@@ -32,7 +38,6 @@
       </div>
     </div>
   </div>
-
 </main>
 
 <footer class="text-muted">
@@ -40,9 +45,12 @@
     <div class="row">
       <div class="col-sm-8 col-md-7 py-4">
         <h4 class="text-white">About</h4>
-        <p class="text-muted">Add some information about the album below, the author, or any other background context.
-          Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social
-          networking sites or contact information.</p>
+        <p class="text-muted">
+          Add some information about the album below, the author, or any other
+          background context. Make it a few sentences long so folks can pick up
+          some informative tidbits. Then, link them off to some social
+          networking sites or contact information.
+        </p>
       </div>
       <div class="col-sm-4 offset-md-1 py-4">
         <h4 class="text-white">Contact</h4>
