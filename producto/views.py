@@ -4,10 +4,12 @@ from django.shortcuts import render
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+import principal.models as models
+from django.core import serializers
+from django.http import JsonResponse
  
-def index(request):
-  template = loader.get_template('index.html')
+def producto(request):
+  template = loader.get_template('producto.html')
   context = {
-
   }
   return HttpResponse(template.render(context, request))
