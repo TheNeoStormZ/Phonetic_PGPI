@@ -2,33 +2,27 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-
-    <title>Phonetic - Pagina principal</title>
-
     {# Cargamos la librería #}
     {% load bootstrap4 %}
 
     {# CSS Bootstrap #}
     {% bootstrap_css %}
     {% load static %}
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+
+    <title>Phonetic - Pagina principal</title>
 </head>
 
 <body>
-    <div class="navbar navbar-dark bg-dark box-shadow">
+    <div class="navbar navbar-dark bg-dark box-shadow sticky-top">
         <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z" />
-                    <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                </svg>
-                <img src="{% static 'logo-phonetic.png' %}" width="100px">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img src="{% static 'logo-phonetic.png' %}" width="200px">
             </a>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09"
@@ -37,14 +31,23 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarsExample09">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/catalogo">Catalogo <span class="sr-only"></span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/secciones">Secciones <span class="sr-only"></span></a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
+                              Secciones
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                              <li><a class="dropdown-item" href="/secciones/Huawei">Huawei</a></li>
+                              <li><a class="dropdown-item" href="/secciones/Xiaomi">Xiaomi</a></li>
+                              <li><a class="dropdown-item" href="/secciones/Vivo">Vivo</a></li>
+                              <li><a class="dropdown-item" href="/secciones/Samsung">Samsung</a></li>
+                              <li><a class="dropdown-item" href="/secciones/Desconocido">Desconocido</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">At.Cliente <span class="sr-only"></span></a>
@@ -53,8 +56,17 @@
                             <a class="nav-link" href="#">Terminos servicios <span class="sr-only"></span></a>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-md-0">
-                        <input class="form-control" type="text" placeholder="Buscar" aria-label="Search">
+                    <form class="form-inline my-2 my-md-0" action="{% url 'search' %}">
+                        <div class="input-group">
+                            <input id="searcher" type="search" class="form-control" name="q" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                              </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </nav>
@@ -66,6 +78,7 @@
 
     {# JS y jQuery Bootstrap #}
     {% bootstrap_javascript jquery='full' %}
+
 </body>
 
 </html>
