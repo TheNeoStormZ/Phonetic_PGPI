@@ -38,36 +38,39 @@
                             <a class="nav-link" href="/catalogo">Catalogo <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
-                              Secciones
+                            <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button"
+                                data-toggle="dropdown" aria-expanded="false">
+                                Secciones
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                              <li><a class="dropdown-item" href="/secciones/Huawei">Huawei</a></li>
-                              <li><a class="dropdown-item" href="/secciones/Xiaomi">Xiaomi</a></li>
-                              <li><a class="dropdown-item" href="/secciones/Vivo">Vivo</a></li>
-                              <li><a class="dropdown-item" href="/secciones/Samsung">Samsung</a></li>
-                              <li><a class="dropdown-item" href="/secciones/Desconocido">Desconocido</a></li>
+                                <li><a class="dropdown-item" href="/secciones/Huawei">Huawei</a></li>
+                                <li><a class="dropdown-item" href="/secciones/Xiaomi">Xiaomi</a></li>
+                                <li><a class="dropdown-item" href="/secciones/Vivo">Vivo</a></li>
+                                <li><a class="dropdown-item" href="/secciones/Samsung">Samsung</a></li>
+                                <li><a class="dropdown-item" href="/secciones/Desconocido">Desconocido</a></li>
                             </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">At.Cliente <span class="sr-only"></span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Terminos servicios <span class="sr-only"></span></a>
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-md-0" action="{% url 'search' %}">
                         <div class="input-group">
-                            <input id="searcher" type="search" class="form-control" name="q" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                            <input id="searcher" type="search" class="form-control" name="q" placeholder="Search"
+                                aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                              </button>
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </form>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login <span class="sr-only"></span></a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
             </button>
@@ -75,6 +78,51 @@
     </div>
 
     {% block contenido %}{% endblock %}
+
+    <footer class="text-muted">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text">Datos de contacto</h4>
+                    <p class="text-muted">
+                    <dl>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <dt>Teléfono</dt>
+                                <dd>+34 678 32 94 65</dd>
+                            </div>
+                            <div class="col-md-4">
+                                <dt>Correo</dt>
+                                <dd>Phonetic@gmail.com</dd>
+                            </div>
+                        </div>
+                    </dl>
+                    <dl>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <dt>Dirección</dt>
+                                <dd>Reina Mercedes, Escuela Técnica de Ingeniería Informática </dd>
+                            </div>
+                        </div>
+                    </dl>
+                    </p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4>¿Necesitas ayuda?</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="/catalogo">Compra</a></li>
+                        <li><a href="/terminos">Terminos de Servicio</a></li>
+                        <li><a href="/privacidad">Aviso de Privacidad</a></li>
+                        <li><a href="/conocenos">Sobre nosotros</a></li>
+                        <li><a href="https://getbootstrap.com/">Boostrap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="float-right">
+                <a href="#">Back to top</a>
+            </p>
+        </div>
+    </footer>
 
     {# JS y jQuery Bootstrap #}
     {% bootstrap_javascript jquery='full' %}

@@ -1,6 +1,7 @@
 from principal.models import Producto
 from django.http import HttpResponse
 from django.template import loader
+from django.db.models import Q
 #import principal.models as models
  
 def index (request):
@@ -8,6 +9,7 @@ def index (request):
   template = loader.get_template('inicio.html')
   context = {
     'productos': productos,
+    'busqueda': '',
   }
   return HttpResponse(template.render(context, request))
   
@@ -42,9 +44,24 @@ def producto(request, producto_id=''):
 def buscar(request):
   template = loader.get_template('inicio.html')
   buscar = request.GET.get('q', None)
-  productos = Producto.objects.filter(nombre__icontains=buscar)
+  productos = Producto.objects.filter(Q(nombre__icontains=buscar) | Q(categoria__icontains=buscar) | Q(secciones__icontains=buscar))
   context = {
-    'productos':productos
+    'productos':productos,
+    'busqueda':buscar,
   }
   return HttpResponse(template.render(context, request))
 
+def terminos(request):
+  template = loader.get_template('terminos.html')
+  context = {}
+  return HttpResponse(template.render(context, request))
+
+def privacidad(request):
+  template = loader.get_template('privacidad.html')
+  context = {}
+  return HttpResponse(template.render(context, request))
+
+def conocenos(request):
+  template = loader.get_template('conocenos.html')
+  context = {}
+  return HttpResponse(template.render(context, request))
