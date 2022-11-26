@@ -9,4 +9,7 @@ urlpatterns = [
     path('buscar', views.buscar, name='search'),
     path('cesta/<accion>/<int:cesta_item_id>', views.cesta, name='cesta'),
     path('cesta/hide/<int:cesta_item_id>', views.cesta, name='cesta_hide'),
+    path('terminos/', views.terminos, name='terminos'),
+    path('privacidad/', views.privacidad, name='privacidad'),
+    path('conocenos/', views.conocenos, name='conocenos'),
 ]
