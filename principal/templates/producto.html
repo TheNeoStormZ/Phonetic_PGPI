@@ -29,8 +29,11 @@
       {% if producto.stock == 0 %}
       <button type="button" disabled="true" class="btn-outline-danger ml-2">AGOTADO</button>
       {% else %}
-      <button type="button" disabled="true" class="btn btn-danger">
+      <button type="button"  class="btn btn-danger">
         Comprar
+      </button>
+      <button type="button" class="btn btn-info">
+        Añadir a la cesta
       </button>
       {% endif %}
     </div>
