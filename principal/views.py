@@ -2,6 +2,10 @@ from principal.models import Producto
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+from django.shortcuts import redirect
 #import principal.models as models
  
 def index (request):
@@ -65,3 +69,54 @@ def conocenos(request):
   template = loader.get_template('conocenos.html')
   context = {}
   return HttpResponse(template.render(context, request))
+
+
+def perfil(request):
+  template = loader.get_template('perfil.html')
+  context = {}
+  return HttpResponse(template.render(context, request))
+
+def register(request):
+  template = loader.get_template('registro.html')
+  if request.method == "POST":
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      username = form.cleaned_data.get('username')
+      messages.success(request, f"Nueva cuenta creada: {username}")
+      login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+      return redirect("/")
+    else:
+      messages.error(request,"Creación fallida, sus datos son erróneos.")
+
+  form = UserCreationForm()
+  context = {'form' : form}
+
+  return HttpResponse(template.render(context, request))
+
+def login_phonetic(request):
+  template = loader.get_template('login.html')
+  if request.method == "POST":
+    form = AuthenticationForm(request, data=request.POST)
+    if form.is_valid():
+      username = form.cleaned_data.get('username')
+      password = form.cleaned_data.get('password')
+      user = authenticate(username=username, password=password)
+      if user is not None:
+        login(request, user)
+        messages.info(request, f"Has iniciado sesión como {username}.")
+        return redirect("/")
+      else:
+        messages.add_message(request,messages.INFO,"Nombre de usuario o contraseña inválido.")
+    else:
+      messages.error(request,"Nombre de usuario o contraseña inválido.")
+
+  form = AuthenticationForm()
+  context={"login_form":form}
+
+  return HttpResponse(template.render(context, request))
+
+def logout_phonetic(request):
+	logout(request)
+	messages.info(request, "Ha cerrado sesión exitosamente.") 
+	return redirect("/")
