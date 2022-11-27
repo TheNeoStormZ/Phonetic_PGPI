@@ -66,14 +66,15 @@ def buscar(request):
   }
   return HttpResponse(template.render(context, request))
 
-def cesta(request, accion='', cesta_item_id=''):
+def cesta(request, accion='', cesta_item_id='',mult='1'):
+  mult = int(mult)
   cesta = Cesta.objects.filter(id=2)[0]
   cesta_item = CestaItem.objects.filter(id=int(cesta_item_id))[0]
   if accion == 'add':
-    cesta_item.sum()
+    cesta_item.sum(mult=mult)
     cesta_item.save()
   elif accion == 'rm':
-    cesta_item.rm()
+    cesta_item.rm(mult=mult)
     cesta_item.save()
   else:
     cesta.delete_cesta_item(cesta_item)

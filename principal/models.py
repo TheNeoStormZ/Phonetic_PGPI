@@ -34,11 +34,11 @@ class CestaItem(models.Model):
     producto = models.OneToOneField(Producto,on_delete=models.CASCADE)
     cantidad = models.IntegerField(validators=[MinValueValidator(1)])
 
-    def sum(self):
-        self.cantidad = self.cantidad + 1 
+    def sum(self,mult):
+        self.cantidad = self.cantidad + mult 
         return 0
-    def rm(self):
-        self.cantidad = self.cantidad - 1
+    def rm(self,mult):
+        self.cantidad = self.cantidad - mult
         return 0
 
 

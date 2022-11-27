@@ -38,9 +38,9 @@ function reload(action,id,precio){
 }
 
 async function fetchAsync (id,action,precio) {
-    url = "/cesta/rm/" + String(id)
+    url = "/cesta/rm/" + String(id) + "/1"
     if (Boolean(action)){
-        url = "/cesta/add/" + String(id)
+        url = "/cesta/add/" + String(id) + "/1"
     }
     base_url =  window.location.protocol + String("//")+ window.location.hostname + String(":") + window.location.port
     

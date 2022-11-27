@@ -2,7 +2,7 @@
 
 {% block contenido %}
 <div class="bg-light">
-  <h2 style="text-align: center;">Detalles del Producto</h2>
+  <h2 class="mt-3" style="text-align: center;">Detalles del Producto</h2>
   <div class="container">
     <div class="row align-items-left">
       <div class="col-md-1"></div>
@@ -14,26 +14,26 @@
         </div>
       </div>
 
-    <div class="col-md-6">
-      <br />
-      <br />
-      <h2>{{producto.nombre}}</h2>
-      <p>{{producto.descripcion}}</p>
-      <br />
-      <br />
-      <h1>{{producto.precio}}€</h1>
-      <br />
-      {% if producto.stock == 0 %}
-      <button type="button" disabled="true" class="btn-outline-danger ml-2">AGOTADO</button>
-      {% else %}
-      <button type="button"  class="btn btn-danger">
-        Comprar
-      </button>
-      <button type="button" class="btn btn-info">
-        Añadir a la cesta
-      </button>
-      {% endif %}
+      <div class="col-md-6">
+        <br />
+        <br />
+        <h2>{{producto.nombre}}</h2>
+        <p>{{producto.descripcion}}</p>
+        <br />
+        <br />
+        <h1>{{producto.precio}}€</h1>
+        <br />
+        <h4>Cantidad:</h4>
+        <form method="get" class="form-inline my-2 my-md-0">
+          <input type="number" name="lote" value="1" min="1" max="{{producto.stock}}"/>
+          {% if producto.stock == 0 %}
+          <button type="button" disabled="true" class="btn-outline-danger ml-2">AGOTADO</button>
+          {% else %}
+          <input type="button" class="btn btn-danger ml-2" value="Comprar">
+          <button type="submit" class="btn btn-info  ml-2" >Añadir a la cesta</button>
+          {% endif %}
+        </form>
+      </div>
     </div>
   </div>
-</div>
-{% endblock %}
+  {% endblock %}
