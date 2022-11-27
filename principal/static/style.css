@@ -1,0 +1,32 @@
+.floating-menu {
+    font-family: sans-serif;
+    background: rgb(64, 65, 63);
+    padding: 5px;
+    width: 300px;
+    height: 300px;
+    z-index: 100;
+    position: fixed;
+    bottom: 5%;
+    border-radius: 2%;
+    overflow-y: scroll;
+  }
+
+.floating-menu a, 
+.floating-menu h3,
+.floating-menu h5 {
+  display: block;
+  margin: 0 0.5em;
+  color: white;
+  position: fixed;
+  z-index: 100;
+}
+
+
+.menu {
+    display: none;   
+}
+
+.menu.opened {
+    display: block;
+}
+

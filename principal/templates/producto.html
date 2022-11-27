@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-6">
         <br />
         <br />
         <h2>{{producto.nombre}}</h2>
@@ -29,17 +29,16 @@
         {% if producto.stock == 0 %}
         <button type="button" disabled="true" class="btn-outline-danger ml-2">AGOTADO</button>
         {% else %}
-        <button type="button" disabled="true" class="btn btn-danger">
+        <button type="button" class="btn btn-danger">
           Comprar
+        </button>
+        <button type="button" class="btn btn-info">
+          Añadir a la cesta
         </button>
         {% endif %}
       </div>
-
-      <div class="col-md-1"></div>
-
     </div>
-  </div>
 
-  </br>
-</div>
-{% endblock %}
+    </br>
+  </div>
+  {% endblock %}

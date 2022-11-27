@@ -28,3 +28,37 @@ class Producto(models.Model):
 
     def _str_(self):
         return self.nombre
+ 
+
+class CestaItem(models.Model):
+    producto = models.OneToOneField(Producto,on_delete=models.CASCADE)
+    cantidad = models.IntegerField(validators=[MinValueValidator(1)])
+
+    def sum(self):
+        self.cantidad = self.cantidad + 1 
+        return 0
+    def rm(self):
+        self.cantidad = self.cantidad - 1
+        return 0
+
+
+
+       
+class Cesta(models.Model):
+    #usuario
+    items = models.ManyToManyField(CestaItem)
+
+    def _str_(self):
+        return self.items.all()
+    def get_total_price(self):
+        cestaItems = [item for item in self.items.all()]
+        return sum([item.producto.precio*item.cantidad for item in cestaItems])
+
+    def get_productos(self):
+        cestaItems = [item for item in self.items.all()]
+        return cestaItems
+
+    def delete_cesta_item(self,cestaItem):
+        self.items.remove(cestaItem)
+        return 0
+
