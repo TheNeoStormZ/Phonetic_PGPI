@@ -1,6 +1,8 @@
 from django.db import models
 from enum import Enum
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import User
+
 
 
 class ProductType(Enum):   # A subclass of Enum
@@ -41,24 +43,30 @@ class CestaItem(models.Model):
         self.cantidad = self.cantidad - mult
         return 0
 
-
-
-       
 class Cesta(models.Model):
     #usuario
+    usuario = models.OneToOneField(User,on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(CestaItem)
 
     def _str_(self):
         return self.items.all()
+
     def get_total_price(self):
-        cestaItems = [item for item in self.items.all()]
-        return sum([item.producto.precio*item.cantidad for item in cestaItems])
+        if self.items is None:
+            return 0
+        else:
+            cestaItems = [item for item in self.items.all()]
+            return sum([item.producto.precio*item.cantidad for item in cestaItems])
 
     def get_productos(self):
-        cestaItems = [item for item in self.items.all()]
-        return cestaItems
+        if self.items is None:
+            return []
+        else:
+            cestaItems = [item for item in self.items.all()]
+            return cestaItems
 
     def delete_cesta_item(self,cestaItem):
         self.items.remove(cestaItem)
         return 0
+
 

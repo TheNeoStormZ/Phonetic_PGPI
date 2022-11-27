@@ -12,4 +12,8 @@ urlpatterns = [
     path('terminos/', views.terminos, name='terminos'),
     path('privacidad/', views.privacidad, name='privacidad'),
     path('conocenos/', views.conocenos, name='conocenos'),
+    path('perfil/', views.perfil, name='perfil'),
+    path('registro/', views.register, name="registro"),
+    path('login/', views.login_phonetic, name="login"),
+    path('logout/', views.logout_phonetic, name="logout"),
 ]
