@@ -1,4 +1,4 @@
-from principal.models import Producto, Cesta, CestaItem
+from principal.models import Producto, Cesta, CestaItem, Pedido
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
@@ -11,7 +11,10 @@ from django.shortcuts import redirect
 def get_cesta(request):
   user = request.user
   if user.is_authenticated:
-    cesta = Cesta.objects.filter(usuario=user)[0]
+    if Cesta.objects.filter(usuario=user).exists():
+      cesta = Cesta.objects.filter(usuario=user)[0]
+    else:
+      cesta = Cesta.objects.create(usuario=user)
   elif Cesta.objects.filter(id=1).exists():
     cesta = Cesta.objects.filter(id=1)[0]
   else:
@@ -24,6 +27,16 @@ def index (request):
   template = loader.get_template('inicio.html')
   context = {
     'productos': productos,
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
+    'busqueda': '',
+  }
+  return HttpResponse(template.render(context, request))
+
+def seguimiento (request):
+  cesta = get_cesta(request)
+  template = loader.get_template('seguimiento.html')
+  context = {
     'cesta': cesta.get_productos(),
     'precio_total': cesta.get_total_price(),
     'busqueda': '',
@@ -99,7 +112,7 @@ def cesta(request, accion='', cesta_item_id='',mult='1'):
   return HttpResponse(200)
 
 def crear_cesta_item(request, producto_id='',lote=''):
-  crear_cesta_item_impl(request, producto_id='',lote=lote)
+  crear_cesta_item_impl(request, producto_id=producto_id,lote=lote)
   return redirect("/producto/"+str(producto_id))
 
 def comprar_add_cesta_item(request, producto_id='',lote=''):
@@ -109,6 +122,18 @@ def checkout(request):
   cesta = get_cesta(request)
   template = loader.get_template('checkout.html')
   context = {}
+  return HttpResponse(template.render(context, request))
+
+def lista_pedidos(request):
+  user = request.user
+  template = loader.get_template('lista_pedidos.html')
+  context = {}
+  if user.is_authenticated:
+    pedidos = Pedido.objects.filter(usuario=user).all()
+    context = {
+      'pedidos':pedidos,
+      'user':user,
+    }
   return HttpResponse(template.render(context, request))
 
 
@@ -192,3 +217,19 @@ def logout_phonetic(request):
 	logout(request)
 	messages.info(request, "Ha cerrado sesión exitosamente.") 
 	return redirect("/")
+
+
+# def buscar_seguimiento_id(request):
+#   template = loader.get_template('lista_pedidos.html')
+#   buscar = request.GET.get('q', None)
+#   productos = Producto.objects.filter(Q(nombre__icontains=buscar) | Q(categoria__icontains=buscar) | Q(secciones__icontains=buscar))
+#   cesta = get_cesta(request)
+#   context = {
+#     'productos':productos,
+#     'cesta': cesta.get_productos(),
+#     'precio_total': cesta.get_total_price(),
+#     'busqueda':buscar,
+#   }
+#   return HttpResponse(template.render(context, request))
+
+

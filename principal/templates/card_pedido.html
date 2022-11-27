@@ -1,0 +1,24 @@
+<div class="row bg-info border border-dark rounded pt-3 pb-3">
+    <div class="col-md-2 text-light">
+        <p><strong>ID del pedido: {{pedido.id}}</strong></p>
+    </div>
+    <div class="col-md-7">
+        <div class="row">
+            {% for cestaitem in pedido.cestaItem.all %}
+            <div class="col text-light">
+                <img src="{{cestaitem.producto.imagen}}" alt="{{cestaitem.producto.nombre}}" width="100px"
+                    height="100px">
+                <p>{{cestaitem.producto.nombre}}</p>
+                <p>x{{cestaitem.cantidad}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button type="button" class="btn btn-primary">Mostrar seguimiento</button>
+        </br>
+        </br>
+        <button type="button" class="btn btn-danger">Cancelar pedido</button>
+    </div>
+</div>
+</br>

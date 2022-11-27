@@ -44,7 +44,6 @@ class CestaItem(models.Model):
         return 0
 
 class Cesta(models.Model):
-    #usuario
     usuario = models.OneToOneField(User,on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(CestaItem)
 
@@ -73,3 +72,25 @@ class Cesta(models.Model):
         return 0
 
 
+class Pedido(models.Model):
+    usuario = models.ForeignKey(User,on_delete=models.CASCADE)
+    cestaItem = models.ManyToManyField(CestaItem)
+
+    def _str_(self):
+        return self.cestaItem
+
+    def get_total_price(self):
+        if self.cesta is None:
+            return 0
+        else:
+            return self.cesta.get_total_price()
+
+    def get_productos(self):
+        if self.cesta is None:
+            return []
+        else:
+            return self.cesta.get_productos()
+
+    def delete_pedido(self):
+        self.delete()
+        return 0
