@@ -107,6 +107,7 @@
                 <h3 class="card-title">Cesta</h3>
                 </br>
                 <h5 class="mt-2" id="precio_total">Precio total: {{precio_total}}€</h5>
+                <a href="/checkout" class="btn btn-danger" id="checkout_button">Checkout</a>
                 {% for p in cesta %}
                 <div class="card mt-5" id="carta-{{p.id}}">
                     <div class="card-header">
@@ -129,12 +130,12 @@
                             </svg></button>
                     </div>
                 </div>
-                {% endfor %}
-
             </div>
+            {% endfor %}
+
         </div>
     </div>
-
+    </div>
 
     {% block contenido %}{% endblock %}
 

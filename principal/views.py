@@ -72,7 +72,10 @@ def secciones(request, seccion_nombre='Desconocido'):
 def producto(request, producto_id=''):
   if '?' in request.get_full_path():
     lote = int(str(request.GET.get('lote', None)))
+    if  'comprar' in request.get_full_path():
+      return checkout(request,producto_id,lote)
     return crear_cesta_item(request,producto_id,lote)
+     
   template = loader.get_template('producto.html')
   producto = Producto.objects.filter(id=producto_id).values()
   cesta = get_cesta(request)
@@ -115,14 +118,20 @@ def crear_cesta_item(request, producto_id='',lote=''):
   crear_cesta_item_impl(request, producto_id=producto_id,lote=lote)
   return redirect("/producto/"+str(producto_id))
 
-def comprar_add_cesta_item(request, producto_id='',lote=''):
-  crear_cesta_item_impl(request, producto_id='',lote=lote)
-
-def checkout(request):
+def checkout(request, producto_id="",lote=""):
   cesta = get_cesta(request)
-  template = loader.get_template('checkout.html')
-  context = {}
-  return HttpResponse(template.render(context, request))
+  if not(producto_id=="" and lote==""):
+    crear_cesta_item_impl(request, producto_id=producto_id,lote=lote)
+    return 0
+  else:
+    template = loader.get_template('checkout.html')
+    context = {
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
+    'busqueda': '',
+    }
+    return HttpResponse(template.render(context, request))
+  
 
 def lista_pedidos(request):
   user = request.user

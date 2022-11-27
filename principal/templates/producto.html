@@ -28,8 +28,8 @@
           {% if producto.stock == 0 %}
           <button type="button" disabled="true" class="btn-outline-danger ml-2">AGOTADO</button>
           {% else %}
-          <input type="number" name="lote" value="1" min="1" max="{{producto.stock}}" />
-          <input type="button" class="btn btn-danger ml-2" value="Comprar">
+          <input id="lote" type="number" name="lote" value="1" min="1" max="{{producto.stock}}" />
+          <input type="button" onclick=comprarAsync({{producto.id}}) class="btn btn-danger ml-2" value="Comprar">
           <button type="submit" class="btn btn-info  ml-2">Añadir a la cesta</button>
           {% endif %}
         </form>
@@ -37,4 +37,7 @@
     </div>
   </div>
 </div>
+
+<script src="../static/comprar.js"></script>
+
 {% endblock %}
