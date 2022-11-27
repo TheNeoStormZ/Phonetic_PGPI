@@ -16,4 +16,5 @@ urlpatterns = [
     path('registro/', views.register, name="registro"),
     path('login/', views.login_phonetic, name="login"),
     path('logout/', views.logout_phonetic, name="logout"),
+    path('checkout/', views.checkout, name="checkout"),
 ]

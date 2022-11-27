@@ -33,7 +33,7 @@ class Producto(models.Model):
  
 
 class CestaItem(models.Model):
-    producto = models.OneToOneField(Producto,on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
     cantidad = models.IntegerField(validators=[MinValueValidator(1)])
 
     def sum(self,mult):
@@ -67,6 +67,9 @@ class Cesta(models.Model):
 
     def delete_cesta_item(self,cestaItem):
         self.items.remove(cestaItem)
+        return 0
+    def add_cestaitem(self,cestaitem):
+        self.items.add(cestaitem)
         return 0
 
 
