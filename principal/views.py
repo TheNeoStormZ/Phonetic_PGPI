@@ -8,14 +8,24 @@ from django.contrib import messages
 from django.shortcuts import redirect
 #import principal.models as models
  
+def get_cesta(request):
+  user = request.user
+  if user.is_authenticated:
+    cesta = Cesta.objects.filter(usuario=user)[0]
+  elif Cesta.objects.filter(id=1).exists():
+    cesta = Cesta.objects.filter(id=1)[0]
+  else:
+    cesta = Cesta.objects.create(id=1)
+  return cesta
+
 def index (request):
   productos = Producto.objects.all().values()[:6]
-  cesta = Cesta.objects.filter(id=2)
+  cesta = get_cesta(request)
   template = loader.get_template('inicio.html')
   context = {
     'productos': productos,
-    'cesta': cesta[0].get_productos(),
-    'precio_total': cesta[0].get_total_price(),
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
     'busqueda': '',
   }
   return HttpResponse(template.render(context, request))
@@ -23,37 +33,37 @@ def index (request):
 def catalogo(request):
   template = loader.get_template('catalogo.html')
   productos = Producto.objects.all().values()
-  cesta = Cesta.objects.filter(id=2)
+  cesta = get_cesta(request)
   lista_categorias = [categoria for categoria in Producto.objects.values_list('categoria', flat=True).distinct()]
   context = {
     'productos':productos,
     'categorias':lista_categorias,
-    'cesta': cesta[0].get_productos(),
-    'precio_total': cesta[0].get_total_price(),
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
   }
   return HttpResponse(template.render(context, request))       
   
 def secciones(request, seccion_nombre='Desconocido'):
   template = loader.get_template('secciones.html')
   productos = Producto.objects.filter(secciones=seccion_nombre).values()
-  cesta = Cesta.objects.filter(id=2)
+  cesta = get_cesta(request)
   lista_secciones = [secciones for secciones in Producto.objects.values_list('secciones', flat=True).distinct()]
   context = {
     'productos':productos,
     'seccion':seccion_nombre,
-    'cesta': cesta[0].get_productos(),
-    'precio_total': cesta[0].get_total_price(),
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
   }
   return HttpResponse(template.render(context, request))      
 
 def producto(request, producto_id=''):
   template = loader.get_template('producto.html')
   producto = Producto.objects.filter(id=producto_id).values()
-  cesta = Cesta.objects.filter(id=2)
+  cesta = get_cesta(request)
   context = {
     'producto':producto[0],
-     'cesta': cesta[0].get_productos(),
-    'precio_total': cesta[0].get_total_price(),
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
   }
   return HttpResponse(template.render(context, request))
 
@@ -61,17 +71,17 @@ def buscar(request):
   template = loader.get_template('inicio.html')
   buscar = request.GET.get('q', None)
   productos = Producto.objects.filter(Q(nombre__icontains=buscar) | Q(categoria__icontains=buscar) | Q(secciones__icontains=buscar))
-  cesta = Cesta.objects.filter(id=2)
+  cesta = get_cesta(request)
   context = {
     'productos':productos,
-    'cesta': cesta[0].get_productos(),
-    'precio_total': cesta[0].get_total_price(),
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
     'busqueda':buscar,
   }
   return HttpResponse(template.render(context, request))
 
 def cesta(request, accion='', cesta_item_id=''):
-  cesta = Cesta.objects.filter(id=2)[0]
+  cesta = get_cesta(request)
   cesta_item = CestaItem.objects.filter(id=int(cesta_item_id))[0]
   if accion == 'add':
     cesta_item.sum()
@@ -113,6 +123,8 @@ def register(request):
     if form.is_valid():
       user = form.save()
       username = form.cleaned_data.get('username')
+      cesta = Cesta.objects.create(usuario=user)
+      cesta.save()
       messages.success(request, f"Nueva cuenta creada: {username}")
       login(request, user, backend='django.contrib.auth.backends.ModelBackend')
       return redirect("/")
