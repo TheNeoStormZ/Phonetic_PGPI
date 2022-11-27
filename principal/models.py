@@ -44,7 +44,7 @@ class CestaItem(models.Model):
         return 0
 
 class Cesta(models.Model):
-    #usuario
+
     usuario = models.OneToOneField(User,on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(CestaItem)
 

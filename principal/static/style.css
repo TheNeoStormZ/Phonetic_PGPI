@@ -13,7 +13,8 @@
 
 .floating-menu a, 
 .floating-menu h3,
-.floating-menu h5 {
+.floating-menu h5,
+ {
   display: block;
   margin: 0 0.5em;
   color: white;
@@ -21,6 +22,15 @@
   z-index: 100;
 }
 
+#checkout_button{
+  display: block;
+  margin: 0 0.5em;
+  position: fixed;
+  z-index: 100;
+  bottom: 7%;
+  left: 170px;
+
+}
 
 .menu {
     display: none;   
