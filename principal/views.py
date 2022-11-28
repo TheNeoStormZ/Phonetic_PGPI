@@ -228,17 +228,17 @@ def logout_phonetic(request):
 	return redirect("/")
 
 
-# def buscar_seguimiento_id(request):
-#   template = loader.get_template('lista_pedidos.html')
-#   buscar = request.GET.get('q', None)
-#   productos = Producto.objects.filter(Q(nombre__icontains=buscar) | Q(categoria__icontains=buscar) | Q(secciones__icontains=buscar))
-#   cesta = get_cesta(request)
-#   context = {
-#     'productos':productos,
-#     'cesta': cesta.get_productos(),
-#     'precio_total': cesta.get_total_price(),
-#     'busqueda':buscar,
-#   }
-#   return HttpResponse(template.render(context, request))
+def buscar_seguimiento_id(request):
+  template = loader.get_template('lista_pedidos.html')
+  buscar = request.GET.get('p', None)
+  pedidos = Pedido.objects.filter(id=buscar).all()
+  cesta = get_cesta(request)
+  context = {
+    'pedidos':pedidos,
+    'cesta': cesta.get_productos(),
+    'precio_total': cesta.get_total_price(),
+    'busqueda':buscar,
+  }
+  return HttpResponse(template.render(context, request))
 
 
