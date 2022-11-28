@@ -71,10 +71,14 @@ class Cesta(models.Model):
         self.items.add(cestaitem)
         return 0
 
+class EstadoPedido(Enum):   # A subclass of Enum
+    PEND = "Pendiente"
+    ENT = "Entregado"
 
 class Pedido(models.Model):
     usuario = models.ForeignKey(User,on_delete=models.CASCADE)
     cestaItem = models.ManyToManyField(CestaItem)
+    estado = models.CharField(max_length=15,choices=[(tag.value,tag.value) for tag in EstadoPedido],default=EstadoPedido.PEND)
 
     def _str_(self):
         return self.cestaItem
