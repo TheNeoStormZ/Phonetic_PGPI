@@ -33,7 +33,7 @@ def index (request):
   }
   return HttpResponse(template.render(context, request))
 
-def seguimiento (request):
+def seguimiento(request, pedido_id):
   cesta = get_cesta(request)
   template = loader.get_template('seguimiento.html')
   context = {
@@ -41,6 +41,18 @@ def seguimiento (request):
     'precio_total': cesta.get_total_price(),
     'busqueda': '',
   }
+  if Pedido.objects.filter(id = pedido_id).all().exists():
+    pedido = Pedido.objects.filter(id = pedido_id).all()[0]
+    context = {
+      'cesta': cesta.get_productos(),
+      'precio_total': cesta.get_total_price(),
+      'busqueda': '',
+      'pedido':pedido,
+    }
+  else:
+    messages.error(request, 'No existe el pedido')
+  
+
   return HttpResponse(template.render(context, request))
   
 def catalogo(request):
@@ -134,16 +146,21 @@ def checkout(request, producto_id="",lote=""):
   
 
 def lista_pedidos(request):
-  user = request.user
-  template = loader.get_template('lista_pedidos.html')
-  context = {}
-  if user.is_authenticated:
-    pedidos = Pedido.objects.filter(usuario=user).all()
-    context = {
-      'pedidos':pedidos,
-      'user':user,
-    }
-  return HttpResponse(template.render(context, request))
+  
+  buscar = request.GET.get('p', None)
+  if buscar is None:
+    user = request.user
+    template = loader.get_template('lista_pedidos.html')
+    context = {}
+    if user.is_authenticated:
+      pedidos = Pedido.objects.filter(usuario=user).all()
+      context = {
+        'pedidos':pedidos,
+        'user':user,
+      }
+    return HttpResponse(template.render(context, request))
+  else: 
+    return redirect("/seguimiento/"+ str(buscar))
 
 
 def crear_cesta_item_impl(request, producto_id='',lote=''):
@@ -227,18 +244,8 @@ def logout_phonetic(request):
 	messages.info(request, "Ha cerrado sesión exitosamente.") 
 	return redirect("/")
 
-
-def buscar_seguimiento_id(request):
-  template = loader.get_template('lista_pedidos.html')
-  buscar = request.GET.get('p', None)
-  pedidos = Pedido.objects.filter(id=buscar).all()
-  cesta = get_cesta(request)
-  context = {
-    'pedidos':pedidos,
-    'cesta': cesta.get_productos(),
-    'precio_total': cesta.get_total_price(),
-    'busqueda':buscar,
-  }
-  return HttpResponse(template.render(context, request))
-
-
+def cancelar_pedido(request, pedido_id):
+  pedido = Pedido.objects.filter(id=pedido_id)[0]
+  pedido.delete()
+  messages.info(request, "Pedido cancelado.")
+  return redirect("/pedidos")

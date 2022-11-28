@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{% static 'favicon.ico' %}">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 
 
     <title>Phonetic - Pagina principal</title>
@@ -55,9 +55,8 @@
                                 <li><a class="dropdown-item" href="/secciones/Desconocido">Desconocido</a></li>
                             </ul>
                         </li>
-                    </ul>
                         <li class="nav-item">
-                            <a class="nav-link" href="/pedidos">Mis pedidos<span class="sr-only"></span></a>
+                            <a class="nav-link" href="/pedidos">Mis pedidos <span class="sr-only"></span></a>
                         </li>
                     <form class="form-inline my-2 my-md-0" action="{% url 'search' %}">
                         <div class="input-group">
@@ -104,25 +103,29 @@
     <div id="menu" class="menu">
             <div class="floating-menu card">
                 <div class="card-body">
-                    <h3 class="card-title">Cesta</h3>
+                    <h3 class="card-title white-mode">Cesta</h3>
                 </br>
                 <h5 class="mt-2" id="precio_total">Precio total: {{precio_total}}€</h5>
+                {% if precio_total != 0 %}
                 <a href="/checkout" class="btn btn-danger" id="checkout_button">Checkout</a>
-                    {% for p in cesta %}
-                    <div class="card mt-5" id="carta-{{p.id}}">
-                        <div class="card-header">
-                            {{p.producto.nombre}} <div id="cantidad-{{p.id}}">x{{p.cantidad}}</div>
-                        </div>
-                        <div class="card-body">
-                            <button type="button" class="btn btn-dark" onclick=fetchAsync({{p.id}},0,{{p.producto.precio}})><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM6.5 7h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1z"/>
-                              </svg></button>
-                            <button type="button" class="btn btn-dark" onclick=fetchAsync({{p.id}},1,{{p.producto.precio}})><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0z"/>
-                              </svg></button>
-                        </div>
+                {% else %}
+                <a href="/checkout" class="btn btn-danger disabled" id="checkout_button">Checkout</a>
+                {% endif %}
+                {% for p in cesta %}
+                <div class="card mt-5" id="carta-{{p.id}}">
+                    <div class="card-header">
+                        {{p.producto.nombre}} <div id="cantidad-{{p.id}}">x{{p.cantidad}}</div>
                     </div>
-                    {% endfor %}
+                    <div class="card-body">
+                        <button type="button" class="btn btn-dark" onclick=fetchAsync({{p.id}},0,{{p.producto.precio}})><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM6.5 7h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1z"/>
+                            </svg></button>
+                        <button type="button" class="btn btn-dark" onclick=fetchAsync({{p.id}},1,{{p.producto.precio}})><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0z"/>
+                            </svg></button>
+                    </div>
+                </div>
+                {% endfor %}
                     
                 </div>
             </div>
@@ -178,8 +181,8 @@
     {# JS y jQuery Bootstrap #}
     {% bootstrap_javascript jquery='full' %}
 
-    <script src="../static/floating.js"></script>
-    <script src="../static/cestadin.js"></script>
+    <script src="{% static 'floating.js' %}"></script>
+    <script src="{% static 'cestadin.js' %}"></script>
 
 </body>
 

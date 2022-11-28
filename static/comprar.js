@@ -1,3 +1,4 @@
+"use strict"
 
 async function comprarAsync (productoId) {
     lote = document.getElementById('lote').value

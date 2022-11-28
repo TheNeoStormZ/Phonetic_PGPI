@@ -1,3 +1,4 @@
+"use strict"
 
 async function hideAsync (id) {
     url = "/cesta/hide/" + String(id)

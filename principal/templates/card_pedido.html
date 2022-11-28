@@ -15,10 +15,10 @@
         </div>
     </div>
     <div class="col-md-3">
-        <a href="/seguimiento/"><button type="button" class="btn btn-primary">Mostrar seguimiento</button></a>
+        <a href="/seguimiento/{{pedido.id}}"><button type="button" class="btn btn-primary">Mostrar seguimiento</button></a>
         </br>
         </br>
-        <button type="button" class="btn btn-danger">Cancelar pedido</button>
+        <a href="/pedido/{{pedido.id}}/cancelar/"><button type="button" class="btn btn-danger">Cancelar pedido</button></a>
     </div>
 </div>
 </br>

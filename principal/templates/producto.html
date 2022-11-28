@@ -26,7 +26,7 @@
         <h4>Cantidad:</h4>
         <form method="get" class="form-inline my-2 my-md-0">
           {% if producto.stock == 0 %}
-          <button type="button" disabled="true" class="btn-outline-danger ml-2">AGOTADO</button>
+          <button type="button" disabled="true" class="btn-outline-danger ml-2 mb-5">AGOTADO</button>
           {% else %}
           <input id="lote" type="number" name="lote" value="1" min="1" max="{{producto.stock}}" />
           <input type="button" onclick=comprarAsync({{producto.id}}) class="btn btn-danger ml-2" value="Comprar">
@@ -39,5 +39,6 @@
 </div>
 
 <script src="../static/comprar.js"></script>
+
 
 {% endblock %}
