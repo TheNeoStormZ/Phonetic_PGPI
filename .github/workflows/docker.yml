@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - 'master'
-
+defaults:
+      run:
+        working-directory: /docker/
 jobs:
   docker:
     runs-on: ubuntu-latest
