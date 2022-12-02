@@ -1,4 +1,4 @@
-from principal.models import Producto, Cesta, CestaItem, Pedido
+from principal.models import Producto, Cesta, CestaItem, Pedido, EstadoPedido
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
@@ -6,6 +6,11 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.views.generic import View
+from django.http import JsonResponse
+import stripe
+from phonetic import settings
+from django.views.decorators.csrf import csrf_protect
 #import principal.models as models
  
 def get_cesta(request):
@@ -132,31 +137,46 @@ def crear_cesta_item(request, producto_id='',lote=''):
 
 def checkout(request, producto_id="",lote=""):
   cesta = get_cesta(request)
+  for cestaitem in cesta.get_productos():
+    stock = cestaitem.producto.stock
+    if (cestaitem.cantidad>stock):
+      cestaitem.cantidad = stock
+      cestaitem.save()
+  amount = int(cesta.get_total_price()*100)
+  if request.method == 'POST':
+    return stripe_pago(request, amount)
   if not(producto_id=="" and lote==""):
     crear_cesta_item_impl(request, producto_id=producto_id,lote=lote)
     return 0
   else:
     template = loader.get_template('checkout.html')
     context = {
-    'cesta': cesta.get_productos(),
-    'precio_total': cesta.get_total_price(),
-    'busqueda': '',
+      'cesta': cesta.get_productos(),
+      'precio_total': cesta.get_total_price(),
+      'busqueda': '',
+      'STRIPE_PUBLIC_KEY':settings.STRIPE_PUBLIC_KEY,
+      'amount': amount,
     }
     return HttpResponse(template.render(context, request))
   
 
 def lista_pedidos(request):
-  
+  cesta = get_cesta(request)
   buscar = request.GET.get('p', None)
   if buscar is None:
     user = request.user
     template = loader.get_template('lista_pedidos.html')
     context = {}
     if user.is_authenticated:
-      pedidos = Pedido.objects.filter(usuario=user).all()
+      pedidos_entregados = Pedido.objects.filter(usuario=user,estado=EstadoPedido.ENT.value).all()
+      pedidos_pendientes = Pedido.objects.filter(usuario=user,estado=EstadoPedido.PEND).all()
       context = {
-        'pedidos':pedidos,
+        'pedidos_entregados':pedidos_entregados,
+        'pedidos_pendientes':pedidos_pendientes,
+        'estado_entregado':EstadoPedido.ENT.value,
         'user':user,
+        'cesta': cesta.get_productos(),
+        'precio_total': cesta.get_total_price(),
       }
     return HttpResponse(template.render(context, request))
   else: 
@@ -248,4 +268,39 @@ def cancelar_pedido(request, pedido_id):
   pedido = Pedido.objects.filter(id=pedido_id)[0]
   pedido.delete()
   messages.info(request, "Pedido cancelado.")
+  return redirect("/pedidos")
+
+@csrf_protect
+def stripe_pago(request, amount):
+  # Obtén la información de pago del formulario enviado
+  token = request.POST.get('stripeToken')
+  direccon = request.POST.get('lugar')
+  plazo = request.POST.get('gridRadios')
+
+
+  # Configura la clave secreta de Stripe
+  stripe.api_key = settings.STRIPE_SECRET_KEY
+
+  # Crea un cargo en Stripe
+  try:
+      charge = stripe.Charge.create(
+          amount=amount,
+          currency='eur',
+          description='Phonetic - Pago',
+          source=token,
+      )
+      print("Pago completado")
+      user = request.user
+      cesta = get_cesta(request)
+      pedido = Pedido.objects.create(usuario=user, estado=EstadoPedido.PEND, lugar=direccon, plazo=int(plazo))
+      print(cesta.get_productos())
+      pedido.cestaItem.set(cesta.get_productos())
+      cesta.items.set([])
+      pedido.save()
+      cesta.save()
+  except stripe.error.CardError as e:
+      # La tarjeta fue rechazada
+      pass
+
+  # Devuelve una respuesta al navegador
   return redirect("/pedidos")

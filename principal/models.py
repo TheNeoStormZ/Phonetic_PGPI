@@ -1,6 +1,6 @@
 from django.db import models
 from enum import Enum
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 
@@ -79,21 +79,11 @@ class Pedido(models.Model):
     usuario = models.ForeignKey(User,on_delete=models.CASCADE)
     cestaItem = models.ManyToManyField(CestaItem)
     estado = models.CharField(max_length=15,choices=[(tag.value,tag.value) for tag in EstadoPedido],default=EstadoPedido.PEND)
+    lugar = models.CharField(max_length=50, null=True)
+    plazo = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)], null=True)
 
     def _str_(self):
         return self.cestaItem
-
-    def get_total_price(self):
-        if self.cesta is None:
-            return 0
-        else:
-            return self.cesta.get_total_price()
-
-    def get_productos(self):
-        if self.cesta is None:
-            return []
-        else:
-            return self.cesta.get_productos()
 
     def delete_pedido(self):
         self.delete()

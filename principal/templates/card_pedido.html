@@ -14,11 +14,13 @@
             {% endfor %}
         </div>
     </div>
+    {% if not pedido.estado == estado_entregado %}
     <div class="col-md-3">
         <a href="/seguimiento/{{pedido.id}}"><button type="button" class="btn btn-primary">Mostrar seguimiento</button></a>
         </br>
         </br>
         <a href="/pedido/{{pedido.id}}/cancelar/"><button type="button" class="btn btn-danger">Cancelar pedido</button></a>
     </div>
+    {% endif %}
 </div>
 </br>

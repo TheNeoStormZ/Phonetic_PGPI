@@ -17,6 +17,7 @@ urlpatterns = [
     path('login/', views.login_phonetic, name="login"),
     path('logout/', views.logout_phonetic, name="logout"),
     path('checkout/', views.checkout, name="checkout"),
+    path('checkout/finish/', views.stripe_pago, name="checkout_finish"),
     path('seguimiento/<int:pedido_id>/', views.seguimiento, name="seguimiento"),
     path('pedido/<int:pedido_id>/cancelar/', views.cancelar_pedido, name="cancelar"),
 ]

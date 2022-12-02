@@ -29,7 +29,12 @@
     </h2>
     </br>
     <div class=" container pl-5 pr-5 pb-5">
-        {% for pedido in pedidos %}
+        <h2>Pedidos pendientes</h2>
+        {% for pedido in pedidos_pendientes %}
+        {% include 'card_pedido.html' %}
+        {% endfor %}
+        <h2>Pedidos entregados</h2>
+        {% for pedido in pedidos_entregados %}
         {% include 'card_pedido.html' %}
         {% endfor %}
     </div>
