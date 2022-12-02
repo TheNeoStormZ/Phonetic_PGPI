@@ -2,4 +2,8 @@ Django==4.1.3
 django-bootstrap4
 django-allauth
 django-crispy-forms
+<<<<<<< HEAD
 stripe
+=======
+bootstrap4
+>>>>>>> ac186c36e6e6e3fb3978a6f8c5caade68d5180e5
