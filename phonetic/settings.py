@@ -36,6 +36,7 @@ ADMINS = (
      ('David Z', 'davzamfer@alum.us.es'),
 )
 
+CSRF_TRUSTED_ORIGINS = ['https://phoneticpgpi-production.up.railway.app']
 ALLOWED_HOSTS = ['127.0.0.1','localhost','phoneticpgpi-production.up.railway.app','0.0.0.0']
 STATIC_URL = 'static/'
 
