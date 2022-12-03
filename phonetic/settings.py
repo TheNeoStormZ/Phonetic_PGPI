@@ -169,3 +169,13 @@ LOGIN_REDIRECT_URL = '/'
 
 STRIPE_SECRET_KEY  = 'sk_test_51M9ulBDVy5OU3kBg96NyPjE09JdzdQwg2ZpFVyRpBncfhIcrSZzowQTTi8Otv7EmCqO0I0BelZ5mCwPk05EVDqXs007e3YwwR4'
 STRIPE_PUBLIC_KEY = 'pk_test_51M9ulBDVy5OU3kBgBtXmlHyYxAMg0ju1VrSNQzFuJ1H5wGM46yWpbkLwTtD4eeo5w9EssPe12asHSYOLDtyDtBGs00BZZAAW3Z'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_FROM = 'phonetic.services@outlook.es'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'phonetic.services@outlook.es'
+EMAIL_HOST_PASSWORD = 'maromopassword69'
+EMAIL_TIMEOUT = 60
+DEFAULT_FROM_EMAIL = 'phonetic.services@outlook.es'

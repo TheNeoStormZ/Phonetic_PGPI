@@ -12,7 +12,13 @@ import stripe
 from phonetic import settings
 from django.views.decorators.csrf import csrf_protect
 #import principal.models as models
- 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+from django.core.mail import send_mail, EmailMessage
+import json
+from django.contrib.auth.models import User
+
 def get_cesta(request):
   user = request.user
   if user.is_authenticated:
@@ -274,9 +280,13 @@ def cancelar_pedido(request, pedido_id):
 def stripe_pago(request, amount):
   # Obtén la información de pago del formulario enviado
   token = request.POST.get('stripeToken')
-  direccon = request.POST.get('lugar')
+  direccion = request.POST.get('lugar')
   plazo = request.POST.get('gridRadios')
-
+  saveInfo = request.POST.get('saveInfo')
+  if saveInfo == 'on':
+    saveInfo = True
+  else:
+    saveInfo=False
 
   # Configura la clave secreta de Stripe
   stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -289,18 +299,39 @@ def stripe_pago(request, amount):
           description='Phonetic - Pago',
           source=token,
       )
-      print("Pago completado")
       user = request.user
+      if(user.__class__.__name__=='AnonymousUser'):
+        #user: 'anonymous' password: 'anondaddy' id:8
+        user = User.objects.filter(id=8).all()[0]
+        pedido = Pedido.objects.create(usuario=user, estado=EstadoPedido.PEND, lugar=direccion, plazo=int(plazo), saveInfo=saveInfo)
+      else:
+        pedido = Pedido.objects.create(usuario=user, estado=EstadoPedido.PEND, lugar=direccion, plazo=int(plazo), saveInfo=saveInfo)
       cesta = get_cesta(request)
-      pedido = Pedido.objects.create(usuario=user, estado=EstadoPedido.PEND, lugar=direccon, plazo=int(plazo))
-      print(cesta.get_productos())
       pedido.cestaItem.set(cesta.get_productos())
+      items = cesta.items.all()
       cesta.items.set([])
       pedido.save()
       cesta.save()
+      enviar_correo(amount, direccion, plazo, items, pedido.id, charge.id)
   except stripe.error.CardError as e:
       # La tarjeta fue rechazada
       pass
 
   # Devuelve una respuesta al navegador
   return redirect("/pedidos")
+
+def enviar_correo(amount, direccion, plazo, items, id_pedido, charge_id):
+  message = 'Gracias por realizar su compra con nosotros !!\n\n'
+  message += 'Id del pedido: ' + str(id_pedido) + '\n'
+  message += 'Dirección de entrega: ' + str(direccion) + '\n'
+  message += 'Plazo de entrega: ' + str(plazo) + '\n\n'
+  message += 'Datos de la compra:\n'
+  for item in items:
+    message += item.producto.nombre + ' x' + str(item.cantidad)
+  message += 'Importe total: ' + str(amount)
+
+  charge = stripe.Charge.retrieve(charge_id)
+  print(charge.source.name)
+
+  email = EmailMessage('Compra en phonetic', message, to=[charge.source.name])
+  email.send()

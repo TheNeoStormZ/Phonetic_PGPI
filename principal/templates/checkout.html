@@ -12,18 +12,18 @@
             d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
         </svg>
       </div>
-        {% if messages %}
-        {% for message in messages %}
-        <div class="row justify-content-center">
-          <div class="alert {{ message.tags }} alert-dismissible fade show col-md-4" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+      {% if messages %}
+      {% for message in messages %}
+      <div class="row justify-content-center">
+        <div class="alert {{ message.tags }} alert-dismissible fade show col-md-4" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        {% endfor %}
-        {% endif %}
+      </div>
+      {% endfor %}
+      {% endif %}
 
       <div class="row">
 
@@ -35,7 +35,7 @@
             <div class="form-group row">
               <label for="lugar" class="col-sm-2 col-form-label">Lugar</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="lugar" name="lugar" placeholder="C/Nowhere, 45" required/>
+                <input type="text" class="form-control" id="lugar" name="lugar" placeholder="C/Nowhere, 45" required />
               </div>
             </div>
 
@@ -44,8 +44,7 @@
                 <legend class="col-form-label col-sm-2 pt-0">Plazos</legend>
                 <div class="col-sm-10">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="1"
-                      checked>
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="1" checked>
                     <label class="form-check-label" for="gridRadios1">
                       1 día
                     </label>
@@ -66,25 +65,35 @@
               </div>
             </fieldset>
 
+            <div class="form-group row">
+              <div class="input-group mb-3">
+                <div class="form-check">
+                    <input type="checkbox" aria-label="Checkbox for following text input" name="saveInfo" id="saveInfo">
+                    <label class="form-check-label" for="defaultCheck1">
+                      Quiero que mi información de pago se guarde en el sistema
+                    </label>
+                </div>  
+              </div>
+            </div>
+
             <h2 class="pb-2">Información de pago</h2>
-            <p>Debido a nuestra política de envío, los gastos de envío están completamente cubiertos, por lo que no debe pagar nada por el envío.</p>
+            <p>Debido a nuestra política de envío, los gastos de envío están completamente cubiertos, por lo que no debe
+              pagar nada por el envío.</p>
+            <br />
+            <p><strong>* No se permiten las devoluciones de los pedidos</strong></p>
 
-            
+
             <script src="https://js.stripe.com/v3/"></script>
-            <script
-              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="{{ STRIPE_PUBLIC_KEY }}"
-              data-amount="{{amount}}"
-              data-name="Phonetic"
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ STRIPE_PUBLIC_KEY }}" data-amount="{{amount}}" data-name="Phonetic"
               data-description="Pago de prueba"
-              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-              data-locale="auto">
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png" data-locale="auto">
 
-              var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
-              stripe.currency = 'eur';
-            </script>
+                var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+                stripe.currency = 'eur';
+              </script>
           </form>
-          
+
         </div>
         <div class="col-sm-6">
           {% for p in cesta %}

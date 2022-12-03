@@ -81,6 +81,7 @@ class Pedido(models.Model):
     estado = models.CharField(max_length=15,choices=[(tag.value,tag.value) for tag in EstadoPedido],default=EstadoPedido.PEND)
     lugar = models.CharField(max_length=50, null=True)
     plazo = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)], null=True)
+    saveInfo = models.BooleanField(null=False,default=False)
 
     def _str_(self):
         return self.cestaItem
