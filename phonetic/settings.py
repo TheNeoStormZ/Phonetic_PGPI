@@ -36,7 +36,7 @@ ADMINS = (
      ('David Z', 'davzamfer@alum.us.es'),
 )
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','phoneticpgpi-production.up.railway.app','0.0.0.0']
 STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
