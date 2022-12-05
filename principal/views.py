@@ -328,7 +328,9 @@ def enviar_correo(amount, direccion, plazo, items, id_pedido, charge_id):
   message += 'Datos de la compra:\n'
   for item in items:
     message += item.producto.nombre + ' x' + str(item.cantidad)
-  message += 'Importe total: ' + str(amount)
+  message += 'Importe total: ' + str(float(amount)/100.00)
+  message += '\nRecordatorio: Si ha pagado mediante contrareembolso recuerde de estar disponible durante la entrega o se le cobrará el importe en la tarjeta que ha dado como medida de precaución'
+
 
   charge = stripe.Charge.retrieve(charge_id)
   print(charge.source.name)
