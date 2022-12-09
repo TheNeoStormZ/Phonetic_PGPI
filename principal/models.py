@@ -21,7 +21,7 @@ class ProductSections(Enum):   # A subclass of Enum
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
-    descripcion = models.TextField()
+    descripcion = models.TextField(max_length=110)
     imagen = models.URLField()
     precio = models.DecimalField(decimal_places=2,max_digits=8,validators=[MinValueValidator(0)])
     categoria = models.CharField(max_length=15,choices=[(tag.value,tag.value) for tag in ProductType],default=ProductType.OTRO)
